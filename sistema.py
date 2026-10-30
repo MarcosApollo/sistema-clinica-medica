@@ -106,7 +106,7 @@ pacientes = []
 
 def cadastrar_medico():
 
-    nome = str(input("Digite o nome do medico: "))
+    nome = str(input("Digite o nome do médico: "))
     while nome == "":
         print("[yellow]AVISO[/]\nO campo 'nome' está vazio, para continuar digite o nome corretamente.")
         nome = str(input("Digite o nome do medico: "))
