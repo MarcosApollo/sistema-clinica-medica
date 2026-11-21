@@ -249,3 +249,21 @@ def listar_medicos():
     medicos = cursor.fetchall()
     conn.close()
     return medicos
+
+def salvar_paciente(paciente):
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute(
+        'INSERT INTO pacientes (nome, cpf, plano) VALUES (?, ?, ?)', (paciente.nome, paciente.cpf, paciente.plano)
+    )
+
+    conn.commit()
+    conn.close()
+
+def listar_pacientes():
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM pacientes')
+    pacientes = cursor.fetchall()
+    conn.close()
+    return pacientes
