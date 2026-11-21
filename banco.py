@@ -42,3 +42,9 @@ def create_tables():
 if __name__ == "__main__":
     create_tables()
     print("Tabelas criadas!")
+
+    from sistema import *
+
+    m = Medico('Dr. João', '111.111.111-11', 'CRM123', 'Cardiologia', 300.0)
+    salvar_medico(m)
+    print(listar_medicos())

@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from rich import print
+from banco import *
 
 class Pessoa(ABC):
 
@@ -34,6 +35,10 @@ class Medico(Pessoa):
     @property
     def especialidade(self):
         return self.__especialidade
+
+    @property
+    def valor_consulta(self):
+        return self.__valor_consulta
 
     def info(self):
         return (f"[bold]Médico:[/] {self.nome}\n"
@@ -225,3 +230,22 @@ def ver_medico():
         return
 
     print(medico_encontrado.info())
+
+def salvar_medico(medico):
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute(
+        'INSERT INTO medicos (nome, cpf, crm, especialidade, valor_consulta) VALUES (?, ?, ?, ?, ?)',
+        (medico.nome, medico.cpf, medico.crm, medico.especialidade, medico.valor_consulta)
+    )
+
+    conn.commit()
+    conn.close()
+
+def listar_medicos():
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM medicos')
+    medicos = cursor.fetchall()
+    conn.close()
+    return medicos
