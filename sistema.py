@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 from rich import print
+from banco import *
+
 
 class Pessoa(ABC):
 
@@ -19,6 +21,7 @@ class Pessoa(ABC):
     def info(self):
         pass
 
+
 class Medico(Pessoa):
 
     def __init__(self, nome, cpf, crm:str, especialidade:str, valor_consulta:float):
@@ -35,11 +38,16 @@ class Medico(Pessoa):
     def especialidade(self):
         return self.__especialidade
 
+    @property
+    def valor_consulta(self):
+        return self.__valor_consulta
+
     def info(self):
         return (f"[bold]Médico:[/] {self.nome}\n"
                 f"[bold]CRM:[/] {self.__crm}\n"
                 f"[bold]Especialidade:[/] {self.__especialidade}\n"
                 f"[bold]Valor consulta:[/] R${self.__valor_consulta:,.2f}")
+
 
 class Paciente(Pessoa):
 
@@ -64,6 +72,7 @@ class Paciente(Pessoa):
         return (f"[bold]Paciente:[/] {self.nome}\n"
                 f"[bold]Historico:[/] {self.historico}\n"
                 f"[bold]Plano:[/] {self.plano}")
+
 
 class Consulta:
 
@@ -101,8 +110,10 @@ class Consulta:
     def __repr__(self):
         return self.resumo()
 
+
 medicos = []
 pacientes = []
+
 
 def cadastrar_medico():
 
@@ -110,12 +121,12 @@ def cadastrar_medico():
     while nome == "":
         print("[yellow]AVISO[/]\nO campo 'nome' está vazio, para continuar digite o nome corretamente.")
         nome = str(input("Digite o nome do medico: "))
-        
+
     cpf = str(input("Digite o cpf do medico: "))
     while cpf == "":
         print("[yellow]AVISO[/]\nO campo 'cpf' está vazio, para continuar digite o cpf corretamente.")
         cpf = str(input("Digite o cpf do medico: "))
-        
+
     crm = str(input("Digite o crm do medico: "))
     while crm == "":
         print("[yellow]AVISO[/]\nO campo 'crm' está vazio, para continuar digite o crm corretamente.")
@@ -136,13 +147,14 @@ def cadastrar_medico():
     medicos.append(medico)
     print(f"[green]SUCESSO![/] Médico {nome} cadastrado!")
 
+
 def cadastrar_paciente():
 
     nome = str(input("Digite o nome do paciente: "))
     while nome == "":
         print("[yellow]AVISO[/]\nO campo 'nome' está vazio, para continuar digite o nome corretamente.")
         nome = str(input("Digite o nome do paciente: "))
-        
+
     cpf = str(input("Digite o cpf do paciente: "))
     while cpf == "":
         print("[yellow]AVISO[/]\nO campo 'cpf' está vazio, para continuar digite o cpf corretamente.")
@@ -156,6 +168,7 @@ def cadastrar_paciente():
     paciente = Paciente(nome, cpf, plano)
     pacientes.append(paciente)
     print(f"[green]SUCESSO![/] Paciente {nome} cadastrado!")
+
 
 def agendar_consulta():
 
@@ -178,43 +191,47 @@ def agendar_consulta():
     for paciente in pacientes:
         if paciente.nome == nome_paciente:
             paciente_encontrado = paciente
+            break
     if not paciente_encontrado:
         print("[red]Paciente não encontrado![/]")
         return
 
     print("Data e horario de agendamento")
-    data = str(input("Didite a data 'dia/mes/ano': "))
+    data = str(input("Digite a data 'dia/mes/ano': "))
     while data == "":
-        print("[yellow]AVISO[/]\nO campo 'data' está vazio, para continuar digite o data corretamente.")
-        data = str(input("Didite a data dia/mes/ano: "))
-    horario = str(input("Didite o horario 'hh:mm': "))
+        print("[yellow]AVISO[/]\nO campo 'data' está vazio, para continuar digite a data corretamente.")
+        data = str(input("Digite a data dia/mes/ano: "))
+    horario = str(input("Digite o horario 'hh:mm': "))
     while horario == "":
-        print("[yellow]AVISO[/]\nO campo 'data' está vazio, para continuar digite o data corretamente.")
-        horario = str(input("Didite o horario 'hh:mm': "))
+        print("[yellow]AVISO[/]\nO campo 'horário' está vazio, para continuar digite o horário corretamente.")
+        horario = str(input("Digite o horario 'hh:mm': "))
 
     consulta = Consulta(medico_encontrado, paciente_encontrado, data, horario)
     paciente_encontrado.adicionar_consulta(consulta)
+
 
 def ver_historico():
 
     print("Lista de pacientes")
     print(pacientes)
-    nome_paciente = str(input("Digite o nome do paciente que deseja marcar uma consulta: "))
+    nome_paciente = str(input("Digite o nome do paciente que deseja ver o histórico: "))
     paciente_encontrado = None
     for paciente in pacientes:
         if paciente.nome == nome_paciente:
             paciente_encontrado = paciente
+            break
     if not paciente_encontrado:
         print("[red]Paciente não encontrado![/]")
         return
 
     print(paciente_encontrado.info())
 
+
 def ver_medico():
 
     print("Lista de medicos para buscar informações")
     print(medicos)
-    nome_medico = str(input("Digite o nome do medico que deseja marcar um horario : "))
+    nome_medico = str(input("Digite o nome do medico que deseja ver as informações: "))
     medico_encontrado = None
     for medico in medicos:
         if medico.nome == nome_medico:
