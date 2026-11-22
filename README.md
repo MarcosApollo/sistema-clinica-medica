@@ -1,4 +1,3 @@
-@ -0,0 +1,36 @@
 # Sistema clinica medica
 
 Sistema de linha de comando em Python para cadastro de médicos e pacientes e agendamento de consultas. Projeto de estudo focado nos quatro pilares da Programação Orientada a Objetos.
